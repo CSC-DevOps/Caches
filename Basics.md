@@ -11,7 +11,7 @@ Change into the `cd basics/` directory. Start the service using `npx nodemon ind
 ``` | {type: 'terminal'}
 ```
 
-Modify the code to add a new route, `/dayofweek` that will return the current day of the week.  *Hint:* 
+Modify the code to add a new route, `/dayofweek` that will return the current day of the week as a number.  *Hint:* You can use `new Date()` to obtain an object with the current time.
 
 ```js | {type: 'file', path: 'basics/routes/simple.js'} 
 const routes = require('express').Router();
@@ -24,7 +24,7 @@ module.exports = routes;
 Try accessing your endpoint!
 
 ```bash | {type: 'command', failed_when: 'exitCode!=0'}
-curl -q localhost:3003/dayofweek
+curl -ss localhost:3003/dayofweek
 ```
 
 ### Creating a simple storage api
