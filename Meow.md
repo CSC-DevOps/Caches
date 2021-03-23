@@ -1,3 +1,8 @@
+<!--
+targets:
+    - type: bakerx
+      name: meow.io
+-->
 
 ## Using caches and queues in meow.io
 
@@ -5,7 +10,11 @@ Part 1. [Setup and Overview](README.md)
 Part 2. [Using express and redis](Basics.md)     
 Part 3. [Using caches and queues in meow.io](Meow.md) ⬅️   
 
-‼️ TODO: git clone meow.io in bakerx script and remove local copy.
+Setup.
+
+``` bash | {type: 'command', failed_when: 'exitCode!=0'}
+git clone https://github.com/CSC-DevOps/meow.io
+```
 
 ### Meow.io
 
@@ -16,7 +25,7 @@ This is a simple 3-tier node.js application, with a view, app layer, and databas
 
 To run the application, perform the following steps:
 
-```
+```bash
 # Setup app
 cd meow.io
 npm install 
@@ -25,6 +34,10 @@ node data/init.js
 # Start server
 npm start
 ```
+
+```bash | {type: 'terminal', 'background-color': '#7e050d'}
+```
+
 
 You should be able to visit http://192.168.44.81:3000/
 
