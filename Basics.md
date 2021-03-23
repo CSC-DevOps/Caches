@@ -6,10 +6,12 @@ Part 3. [Using caches and queues in meow.io](Meow.md)
 
 ### Creating a simple route in express
 
-Change into the `cd basics/` directory. Start the service using `npx nodemon index.js`, which will reload whenever you change any of the files.
+Change into the `cd basics/` directory. Start the service using `npx nodemon index.js`, which will reload the process whenever you change any of the script files.
 
 ``` | {type: 'terminal'}
 ```
+
+**Task 1.** Implement a day of week service.
 
 Modify the code to add a new route, `/dayofweek` that will return the current day of the week as a number.  *Hint:* You can use `new Date()` to obtain an object with the current time.
 
@@ -29,7 +31,28 @@ curl -ss localhost:3003/dayofweek
 
 ### Creating a simple storage api
 
-nonce service.
+We will be creating a self-destruct message service.
+
+**Task 2.** Self-destruct message service.
+
+Create two routes, `/tape` and `/read` the meet the following spec, using the redis key store.
+
+```
+# Post content to server. Service returns retrieval link.
+$ curl --request POST -H "Content-Type: application/json" --data '{"message":"Your mission Jim, should you decide to accept it"}' http://localhost:3003/tape
+{"success":true,"link":"http://localhost:3003/read/4be24cf5-7ed6-443a-8bbf-f3298cb08ed1"}
+# Retrieve content
+$ curl http://localhost:3000/read/4be24cf5-7ed6-443a-8bbf-f3298cb08ed1
+{"message": "Your mission Jim, should you decide to accept it",
+"ttl": "This message will self-destruct in 10 seconds" }
+$ sleep 3
+$ curl http://localhost:3000/read/4be24cf5-7ed6-443a-8bbf-f3298cb08ed1
+{"message": "Your mission Jim, should you decide to accept it",
+"ttl": "This message will self-destruct in 7 seconds" }
+```
+
+You can use `const { v4: uuidv4 } = require('uuid');` to generate a unique key.
+After the key is read, use the [EXPIRE](https://redis.io/commands/expire) command to make sure this key will expire in 10 seconds. Use the [TTL](https://redis.io/commands/ttl) to get the time-to-live value of the key.
 
 ```js | {type: 'file', path: 'basics/routes/api.js'} 
 const routes = require('express').Router();
@@ -45,53 +68,18 @@ let client = redis.createClient(6379, '192.168.44.81', {});
 module.exports = routes;
 ```
 
-``` bash | {type: 'command'}
-curl localhost:3003/
+Tape your secret message.
+
+``` bash | {type: 'command', failed_when: 'exitCode != 0'}
+curl -ss --request POST -H "Content-Type: application/json" --data '{"message":"Your mission Jim, should you decide to accept it"}' http://localhost:3003/tape
 ```
 
-``` bash | {type: 'command'}
-curl localhost:3003/set/mykey/hello
+Edit the curl command to call the retrieve given message. Call again to confirm, descending TTL, and confirm empty message when TTL <=0.
+
+``` bash | {type: 'command', failed_when: 'exitCode != 0'}
+curl -ss
 ```
 
+## Next
 
-Cache key for 10 seconds.
-
-``` bash | {type: 'command'}
-curl localhost:3003/cache/hi/message
-```
-
-Check key
-``` bash | {type: 'command'}
-curl localhost:3003/get/hi
-```
-
-
-##### Task 1: An expiring cache
-
-Create two routes, `/get` and `/set`.
-
-When [`/set`](http://192.168.44.81:3003/set) is visited (i.e. GET request), set a new key, with the value:
-> "this message will self-destruct in 10 seconds".
-
-Use the [EXPIRE](https://redis.io/commands/expire) command to make sure this key will expire in 10 seconds.
-
-When [`/get`](http://192.168.44.81:3003/get) is visited (i.e. GET request), fetch that key, and send its value back to the client: `res.send(value)`.
-
-##### Task 2: Recent visited sites
-
-Create a new route, `/recent`, which will display the most recently visited sites.
-
-There is already a [global hook (middleware) setup](./basics/index.js), which will allow you to see each site that is requested:
-
-```js
-// Add hook to make it easier to get all visited URLS.
-routes.use(function (req, res, next) {
-    console.log(req.method, req.url);
-
-    // You can store visited pages here...
-    
-    next(); // Passing the request to the next handler in the stack.
-});
-```
-
-Use [`LPUSH`](https://redis.io/commands/lpush), [`LTRIM`](https://redis.io/commands/ltrim), and[`LRANGE`](https://redis.io/commands/lrange) redis commands to store the most recent 5 sites visited, and return that to the client.
+We will be moving on to learning about more advanced storage mechanisms in redis in Part 3. [Using caches and queues in meow.io](Meow.md).  
