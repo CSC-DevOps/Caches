@@ -43,39 +43,38 @@ You should be able to visit http://192.168.44.81:3000/
 
 ##### Task 3: Cache best facts calculation
 
-The front page will load all cat facts and display the 100 most voted facts on each page load.
-Without caching, this can add up with heavier traffic.
+The front page will load all cat facts and display the 100 most voted facts on each page load. Without caching, this can add up with heavier traffic.
 
 ```bash | {type: 'command'}
 time ./meow.io/load-index.sh 
 ```
 
-real	0m20.373s
 
-However, if we cache the results, we can greatly reduce this load.
+However, if we cache the results, we can greatly reduce the lag by at least 10x.
 
-```
-$ time ./load.sh 
-
-real	0m4.282s
+```bash
+real	2m01.373s # (Without caching)
+real	0m20.373s # (With caching)
 ```
 
 Task: Modify `meow.io/routes/index.js` to cache and return the results of bestFacts. Have cached results expire after 10 seconds. You should see a reduction in load time for the site. 
 
-Note: This is making an explicit trade-off between availability and consistency, since displayed data will be potentially 10 seconds behind real scores.
+**Note:** This is making an explicit trade-off between availability and consistency, since displayed data will be potentially 10 seconds behind real scores.
 
 ##### Task 4: Cat picture uploads storage
  
 The front page will display the 5 most recently uploaded files (/upload).
 You can use curl to help you upload files easily for test.
 
-```bash
-curl -F "image=@./data/morning.jpg" http://localhost:3000/upload
+```bash | {type: 'command'}
+curl -F "image=@./meow.io/data/morning.jpg" http://localhost:3000/upload
+curl -F "image=@./meow.io/data/i-scream.jpg" http://localhost:3000/upload
+curl -F "image=@./meow.io/data/hairypotter.jpg" http://localhost:3000/upload
 ```
 
-However, this is being read from the database on each page load. You could instead simply store the 5 most recently uploaded files in a cache without reading from the database.
+However, these images are being read from the database on each page load. You could instead simply change the code to both write to the database *and* store the 5 most recently uploaded files in redis. Then the recentUploads call can read from the redis store instead of the db.
 
-Task: Modify the `meow.io/routes/upload.js` file to cache recently uploaded images. Modify the `meow.io/routes/index.js` to read from the cache instead the database.
+Task: Modify the `meow.io/routes/upload.js` file to cache recently uploaded images in addition to writing to the database. Modify the `meow.io/routes/index.js` to read from the cache instead the database.
 
 ##### Task 5: Regulate uploads with queue
 
