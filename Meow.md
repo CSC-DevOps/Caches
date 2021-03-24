@@ -46,11 +46,11 @@ You should be able to visit http://192.168.44.81:3000/
 The front page will load all cat facts and display the 100 most voted facts on each page load.
 Without caching, this can add up with heavier traffic.
 
+```bash | {type: 'command'}
+time ./meow.io/load-index.sh 
 ```
-$ time ./load.sh 
 
 real	0m20.373s
-```
 
 However, if we cache the results, we can greatly reduce this load.
 
