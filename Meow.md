@@ -82,6 +82,8 @@ However, these images are being read from the database on each page load. You co
 
 🏗️ Task: Modify the `meow.io/routes/upload.js` file to cache recently uploaded images in addition to writing to the database. Modify the `meow.io/routes/index.js` to read from the cache instead the database.
 
+Consider using [`LPUSH`](https://redis.io/commands/lpush), [`LTRIM`](https://redis.io/commands/ltrim), and[`LRANGE`](https://redis.io/commands/lrange) redis commands to store the 5 most recent uploaded images.
+
 📊 Using `time ./meow.io/load-and-vote-upload.sh`, compare before and after performance differences.
 
 ##### Task 5: Regulate uploads with queue

@@ -74,6 +74,11 @@ Tape your secret message.
 curl -ss --request POST -H "Content-Type: application/json" --data '{"message":"Your mission Jim, should you decide to accept it"}' http://localhost:3003/tape
 ```
 
+If on Windows, use this version:
+``` bash | {platform: 'windows', type: 'command', failed_when: 'exitCode != 0'}
+curl -ss --request POST -H "Content-Type: application/json" --data "{\"message\":\"Your mission Jim, should you decide to accept it\"}" http://localhost:3003/tape
+```
+
 Edit the curl command to call the retrieve given message. Call again to confirm, descending TTL, and confirm empty message when TTL <=0.
 
 ``` bash | {type: 'command', failed_when: 'exitCode != 0'}
