@@ -1,4 +1,4 @@
-Infrastructure Components
+Caches and Queues Workshop
 =========================
 
 In this workshop, we'll cover the basics of adding infrastructure components to a web application, meow.io.

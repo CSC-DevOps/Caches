@@ -5,6 +5,9 @@ const hello = require('./routes/hello');
 const simple = require('./routes/simple');
 const api = require('./routes/api');
 
+
+app.use(express.json());
+
 // WEB ROUTES ⛯
 app.use('/', hello);
 app.use('/', simple);
