@@ -8,6 +8,12 @@ Part 1. [Setup and Overview](README.md) ⬅️
 Part 2. [Using express and redis](Basics.md)  
 Part 3. [Using caches and queues in meow.io](Meow.md)  
 
+``` | {type: 'youtube'}
+https://www.youtube.com/embed/qZK88sLrE5w
+```
+
+> Note: This video has lots of extra bloopers, so hopefully, that will help you adopt strategies on how to get unstuck!
+
 ## Setup
 
 ### Before you get started
