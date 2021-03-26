@@ -42,7 +42,12 @@ client.set("key", "value");
 client.get("key", function(err,value){ console.log(value)});
 ```
 
-🎯 Try it out!
+🎯 You can interactively run redis commands using the `redis-cli` program. Try it out!
+
+``` | {type: 'terminal' }
+```
+
+📜 We'll use the node-redis client api to do the same task. Run the following script!
 
 ```js | {type: 'script'}
 const redis = require("redis");
